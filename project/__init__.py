@@ -7,14 +7,13 @@ import uuid
 
 def create_app():
     app = Flask(__name__)
-
-    app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask-auth.sqlite'
+    app.config.from_envvar('APP')
 
     db.init_app(app)
 
-    with app.app_context():
-        db.create_all()
+    #with app.app_context():
+    #    def create_tables():
+    #        db.create_all()        
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -36,15 +35,16 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+
+### Error hanlders 
+
     @app.errorhandler(401)
     def unauthorized_page(error):
         return render_template("errors/401.html"), 401
 
-
     @app.errorhandler(404)
     def page_not_found(error):
         return render_template("errors/404.html"), 404
-
 
     @app.errorhandler(500)
     def server_error_page(error):

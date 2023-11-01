@@ -2,6 +2,10 @@
 
 {% block content %}
 <h1 class="title">
-  Welcome, {{ name }}!
-</h1>
+  Welcome, {{ user.name }}!
+  {% for role in user.roles %}
+  <div class="role">
+      <p>role: {{ role.name }}</p>
+  </div>
+{% endfor %}</h1>
 {% endblock %}
